@@ -1,0 +1,22 @@
+name: google_drive_client
+description: A new Flutter package project.
+version: 1.0.0
+author: hokamc
+homepage: https://github.com/hokamc/google_drive_client
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.17.0 <2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^3.0.10
+  path_provider: ^1.6.24
+  mime_type: ^0.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
