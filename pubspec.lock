@@ -117,7 +117,7 @@ packages:
     source: hosted
     version: "0.3.2"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.dartlang.org"

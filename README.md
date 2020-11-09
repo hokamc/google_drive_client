@@ -18,6 +18,7 @@ A Handful Google Drive Client For Dart
 
 - [Table of Contents](#table-of-contents)
 - [API](#api)
+- [Link](#link)
 - [Authors](#authors)
 
 ## API
@@ -33,6 +34,10 @@ Future<File> download(String id, String filename, {Function(int, int) onDownload
 
 Future<void> delete(String id);
 ```
+
+## Link
+
+[google_drive_client](https://pub.dev/packages/google_drive_client#link)
 
 ## Authors
 
