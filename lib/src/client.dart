@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,9 +12,14 @@ class GoogleDriveClient {
   GoogleDriveSpace _space;
   Dio _dio;
 
-  GoogleDriveClient(this._dio, String accessToken, {GoogleDriveSpace space}) {
+  GoogleDriveClient(this._dio, {@required Future<String> Function() getAccessToken, GoogleDriveSpace space}) {
     _space = space ?? GoogleDriveSpace.appDataFolder;
-    _dio.options.headers = {'Authorization': 'Bearer $accessToken'};
+
+    _dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+      options.headers['Authorization'] = 'Bearer ${await getAccessToken.call()}';
+      return options;
+    }));
+
     _dio.options.validateStatus = (code) => code == 200 || code == 204;
   }
 
@@ -22,7 +28,8 @@ class GoogleDriveClient {
     Response response = await _dio.get(
       'https://www.googleapis.com/drive/v3/files',
       queryParameters: {
-        'fields': 'files(id,name,kind,mimeType,description,properties,appProperties,spaces,createdTime,modifiedTime,size)',
+        'fields':
+            'files(id,name,kind,mimeType,description,properties,appProperties,spaces,createdTime,modifiedTime,size)',
         'spaces': _space == GoogleDriveSpace.appDataFolder ? 'appDataFolder' : null,
       },
     );
@@ -72,7 +79,8 @@ class GoogleDriveClient {
   }
 
   /// create a google file
-  Future<GoogleDriveFileMetaData> create(GoogleDriveFileUploadMetaData metaData, File file, {Function(int, int) onUploadProgress}) async {
+  Future<GoogleDriveFileMetaData> create(GoogleDriveFileUploadMetaData metaData, File file,
+      {Function(int, int) onUploadProgress}) async {
     Response metaResponse = await _dio.post(
       'https://www.googleapis.com/upload/drive/v3/files',
       queryParameters: {

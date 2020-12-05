@@ -11,7 +11,7 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final GoogleDriveClient client = GoogleDriveClient(Dio(), Config.ACCESS_TOKEN);
+  final GoogleDriveClient client = GoogleDriveClient(Dio(), getAccessToken: () async => Config.ACCESS_TOKEN);
   final String id = '';
 
   @override
